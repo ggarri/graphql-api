@@ -9,7 +9,7 @@ To achieve that we will need to export our db model into php entities, which wil
 
 ## Setup
 
-### Include repository in composer.json
+### Include repository in `composer.json`
 
 ```
 "repositories": [
@@ -23,7 +23,9 @@ To achieve that we will need to export our db model into php entities, which wil
 "require": {
     "ggarri/symfony-graphql-api": "*"
 }
-    
+....
+"minimum-stability": "dev",
+....
 ```
 
 ### Installing dependencies
