@@ -111,12 +111,26 @@ If you want to know more about Graphql syntax, go to: http://graphql.org/learn/
 
 # Troubleshooting
 
-## Using Postgres blob type
+## Using POSTGRES 9.5
 In case your db is Postgres and includes `Blob` or `jsonb` types you might need to patch the 
 postgres driver due to `Blob` or `jsonb` wasn't included in latest version of driver.
 
 #### Patching Postgres driver to include new types
 ``` 
-cp vendor/graphqlapi/src/Doctrine src/
-patch vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/AbstractPostgreSQLDriver.php vendor/graphqlapi/Doctrine/patch/AbstractPostgreSQLDriver.patch
+cp -r vendor/ggarri/graphql-api/src/Doctrine src/
+patch vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/AbstractPostgreSQLDriver.php vendor/ggarri/graphql-api/src/Doctrine/patch/AbstractPostgreSQLDriver.patch
+```
+(*) Please, check if patch was applied correctly, because some types it does't.
+Around line 110 it has to have the following lines:
+```
+switch(true) {
+    case version_compare($version, '9.4', '>='):
+        return new PostgreSQL95Platform();  // THIS IS THE IMPORTANT ONE
+    case version_compare($version, '9.2', '>='):
+        return new PostgreSQL92Platform();
+    case version_compare($version, '9.1', '>='):
+        return new PostgreSQL91Platform();
+    default:
+        return new PostgreSqlPlatform();
+}
 ```
