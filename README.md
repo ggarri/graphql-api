@@ -35,11 +35,13 @@ composer install/update
 ```
 # AppKernel.php
 
+use GraphqlApiBundle\GraphqlApiBundle;
+...
 public function registerBundles()
     {
         $bundles = array(
             ....
-            new GraphqlApiBundle\GraphqlApiBundle(),
+            new GraphqlApiBundle(),
 ....
 ```
 
