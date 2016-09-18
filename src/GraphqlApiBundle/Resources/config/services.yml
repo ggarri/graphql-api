@@ -1,0 +1,13 @@
+services:
+  graphqlapibundle.service.graphqlschema:
+    class: GraphqlApiBundle\Service\GraphqlSchema
+    arguments:
+      - @doctrine.orm.entity_manager
+    calls:
+      - [loadSchema]
+
+  graphqlapibundle.routing_loader:
+    class: GraphqlApiBundle\Routing\ExtraLoader
+    tags:
+        - { name: routing.loader }
+

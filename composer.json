@@ -1,0 +1,73 @@
+{
+    "name": "ggarri/symfony-graphql-api",
+    "license": "MIT",
+    "type": "library",
+    "description": "Graphql readonly api for you database.",
+    "keywords": ["api", "graphql", "database"],
+    "authors": [
+        {
+            "name": "Gabriel Garrido",
+            "email": "ggarri@gmail.com"
+        }
+    ],
+    "support": {
+        "email": "ggarri@gmail.com"
+    },
+    "require": {
+        "php": ">=5.3.9",
+        "symfony/symfony": "2.8.*",
+        "doctrine/orm": "^2.4.8",
+        "doctrine/doctrine-bundle": "~1.4",
+        "symfony/swiftmailer-bundle": "~2.3",
+        "symfony/monolog-bundle": "~2.4",
+        "sensio/distribution-bundle": "~5.0",
+        "sensio/framework-extra-bundle": "^3.0.2",
+        "incenteev/composer-parameter-handler": "~2.0",
+        "doctrine/dbal": "^2.5",
+        "opsway/doctrine-dbal-postgresql": "~0.1",
+        "webonyx/graphql-php": "^0.6.4"
+    },
+    "require-dev": {
+        "sensio/generator-bundle": "~3.0",
+        "symfony/phpunit-bridge": "~2.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        },
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppCache.php"
+        ]
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
+            "patch vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/AbstractPostgreSQLDriver.php patch/AbstractPostgreSQLDriver.patch"
+        ],
+        "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
+        ]
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "extra": {
+        "symfony-app-dir": "app",
+        "symfony-web-dir": "web",
+        "symfony-assets-install": "relative",
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        }
+    }
+}

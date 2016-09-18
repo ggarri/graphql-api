@@ -1,0 +1,43 @@
+26a27
+> use Doctrine\DBAL\Platforms\PostgreSQL95Platform;
+111a113,114
+> 			case version_compare($version, '9.4', '>='):
+> 				return new PostgreSQL95Platform();
+--- /tmp/AbstractPostgreSQLDriver.php	2016-08-07 23:35:10.834240912 +0200
++++ vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/AbstractPostgreSQLDriver.php	2016-08-07 23:35:20.570240553 +0200
+@@ -24,7 +24,6 @@
+ use Doctrine\DBAL\Exception;
+ use Doctrine\DBAL\Platforms\PostgreSQL91Platform;
+ use Doctrine\DBAL\Platforms\PostgreSQL92Platform;
+-use Doctrine\DBAL\Platforms\PostgreSQL95Platform;
+ use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+ use Doctrine\DBAL\Schema\PostgreSqlSchemaManager;
+ use Doctrine\DBAL\VersionAwarePlatformDriver;
+@@ -110,8 +109,6 @@
+         $version      = $majorVersion . '.' . $minorVersion . '.' . $patchVersion;
+ 
+         switch(true) {
+-			case version_compare($version, '9.4', '>='):
+-				return new PostgreSQL95Platform();
+             case version_compare($version, '9.2', '>='):
+                 return new PostgreSQL92Platform();
+             case version_compare($version, '9.1', '>='):
+--- vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/AbstractPostgreSQLDriver.php	2016-08-07 23:36:56.574237012 +0200
++++ /tmp/AbstractPostgreSQLDriver.php	2016-08-07 23:35:10.834240912 +0200
+@@ -24,6 +24,7 @@
+ use Doctrine\DBAL\Exception;
+ use Doctrine\DBAL\Platforms\PostgreSQL91Platform;
+ use Doctrine\DBAL\Platforms\PostgreSQL92Platform;
++use Doctrine\DBAL\Platforms\PostgreSQL95Platform;
+ use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+ use Doctrine\DBAL\Schema\PostgreSqlSchemaManager;
+ use Doctrine\DBAL\VersionAwarePlatformDriver;
+@@ -109,6 +110,8 @@
+         $version      = $majorVersion . '.' . $minorVersion . '.' . $patchVersion;
+ 
+         switch(true) {
++			case version_compare($version, '9.4', '>='):
++				return new PostgreSQL95Platform();
+             case version_compare($version, '9.2', '>='):
+                 return new PostgreSQL92Platform();
+             case version_compare($version, '9.1', '>='):
