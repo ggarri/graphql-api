@@ -7,26 +7,54 @@ To achieve that we will need to export our db model into php entities, which wil
   by doctrine annotations, taking advantage of this doctrine annotations this library will generate
   the graphql schema to accessed using Graphql query syntax.
 
-# Setup
+## Setup
 
-## Include repository in composer.json
+### Include repository in composer.json
 
 ```
 "repositories": [
 ....
     {
         "type": "git",
-        "url": "http://git.trivago.trv/pse/bootstrapbundle.git"
+        "url": "https://github.com/ggarri/symfony-doctrine-graphql"
     },
+....
+
+"require": {
+    "ggarri/symfony-graphql-api": "*"
+}
+    
+```
+
+### Installing dependencies
+```
+composer install/update
+```
+
+### Loading bundle
+```
+# AppKernel.php
+
+public function registerBundles()
+    {
+        $bundles = array(
+            ....
+            new GraphqlApiBundle\GraphqlApiBundle(),
 ....
 ```
 
-## Installing dependencies
+### Routing
+Including graphql entry point in 'app/config/routing.yml'
 ```
-composer install
+# Adding graphql routes (127.0.0.1:8000/graphql/api?query={graphql_query}
+graphql_routing:
+    resource: .
+    type: extra
 ```
 
-Set up doctrine database connection This library will only require an valid doctrine connection as the one above:
+
+#### Setup db connection
+If you didn't do it yet you will need to set up doctrine database connection This library will only require an valid doctrine connection as the one above:
 ```
 doctrine:
     dbal:
@@ -45,30 +73,27 @@ doctrine:
         auto_mapping: true
 ```
 
-Including graphql entry point in 'app/config/routing.yml'
-```
-# Adding graphql routes (127.0.0.1:8000/graphql/api?query={graphql_query}
-graphql_routing:
-    resource: .
-    type: extra
-```
-
 ## Importing your DB Model
 
-As it was mentioned above, your db model will be imported from connection defined under Doctrine.dbal.default.
+Once everything is setup you can start converting your db into php entity classes.
+For that, and as it was mentioned above, your db model will be imported from connection defined under Doctrine.dbal.default.
 
-For the following export command we had use `"AppBundle\\Entity"` as namespace for model to be imported, and `./src/AppBundle/Entity` 
-as location folder to place each of the entity files.
+The above command will do all the work for you.  
 
 ```
 php app/console graphql-api:graphql:generate-schema --namespace "AppBundle\\Entity" annotation ./src/AppBundle/Entity --from-database --force
 ```
 
+(*) we had use `"AppBundle\\Entity"` as namespace for model to be imported, and `./src/AppBundle/Entity` 
+as location folder to place each of the entity files.
+(*) Possible problems appear above
 
 
-##Usage
+## Usage
 
-Taking in account you have the server running under `127.0.0.1:8000`...
+That is all, it is time to start using start reading your db with your new custimized graphql api.
+
+(We used `127.0.0.1:8000` as server, you might have it on different name)
 
 #### Curl sample
 ```
@@ -82,9 +107,9 @@ http://127.0.0.1:8000/graphql/api?query={boardtype(id:2){id,name,vatClass{amount
 
 If you want to know more about Graphql syntax, go to: http://graphql.org/learn/
 
-## Troubleshooting
+# Troubleshooting
 
-### Using Postgres blob type
+## Using Postgres blob type
 In case your db is Postgres and includes `Blob` types you might need to patch the 
 postgres driver due to `Blob` wasn't included in latest version of driver.
 
