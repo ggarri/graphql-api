@@ -2,7 +2,7 @@
     "name": "ggarri/graphql-api",
     "license": "MIT",
     "type": "library",
-    "description": "Graphql readonly api for you database.",
+    "description": "Graphql readonly api for your database.",
     "keywords": ["api", "graphql", "database"],
     "homepage": "https://github.com/ggarri/graphql-api",
     "authors": [
