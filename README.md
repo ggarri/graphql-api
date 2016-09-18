@@ -110,10 +110,11 @@ If you want to know more about Graphql syntax, go to: http://graphql.org/learn/
 # Troubleshooting
 
 ## Using Postgres blob type
-In case your db is Postgres and includes `Blob` types you might need to patch the 
-postgres driver due to `Blob` wasn't included in latest version of driver.
+In case your db is Postgres and includes `Blob` or `jsonb` types you might need to patch the 
+postgres driver due to `Blob` or `jsonb` wasn't included in latest version of driver.
 
-####Patching Postgres driver to include new types
-```
-patch vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/AbstractPostgreSQLDriver.php patch/AbstractPostgreSQLDriver.patch
+#### Patching Postgres driver to include new types
+``` 
+cp vendor/graphqlapi/src/Doctrine src/
+patch vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/AbstractPostgreSQLDriver.php vendor/graphqlapi/Doctrine/patch/AbstractPostgreSQLDriver.patch
 ```

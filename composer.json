@@ -34,12 +34,8 @@
     },
     "autoload": {
         "psr-4": {
-            "": "src/"
-        },
-        "classmap": [
-            "app/AppKernel.php",
-            "app/AppCache.php"
-        ]
+            "GraphqlApiBundle\\": "src/GraphqlApiBundle"
+        }
     },
     "extra": {
         "branch-alias": {
