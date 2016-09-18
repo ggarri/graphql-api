@@ -21,10 +21,8 @@ To achieve that we will need to export our db model into php entities, which wil
 ....
 
 "require": {
-    "ggarri/symfony-graphql-api": "*"
+    "ggarri/symfony-graphql-api": "^0.6-dev"
 }
-....
-"minimum-stability": "dev",
 ....
 ```
 

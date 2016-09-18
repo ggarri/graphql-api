@@ -1,10 +1,10 @@
 {
-    "name": "ggarri/symfony-graphql-api",
+    "name": "ggarri/graphql-api",
     "license": "MIT",
     "type": "library",
     "description": "Graphql readonly api for you database.",
     "keywords": ["api", "graphql", "database"],
-    "homepage": "https://github.com/ggarri/symfony-doctrine-graphql",
+    "homepage": "https://github.com/ggarri/graphql-api",
     "authors": [
         {
             "name": "Gabriel Garrido",
