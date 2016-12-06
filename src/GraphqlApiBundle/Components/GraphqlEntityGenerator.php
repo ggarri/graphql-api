@@ -4,7 +4,7 @@
  * Copyright: 2016, Base7booking
  */
 
-namespace GraphqlApiBundle\Tools;
+namespace GraphqlApiBundle\Components;
 
 use Doctrine\ORM\Tools\EntityGenerator;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -17,11 +17,13 @@ class GraphqlEntityGenerator extends EntityGenerator
 
 //	protected $classToExtend = 'GraphqlObject';
 
-	public function getFilename(ClassMetadataInfo $metadata) {
+	public function getFilename(ClassMetadataInfo $metadata)
+    {
 		return $this->getClassName($metadata);
 	}
 
-	public function setDefaultNamespace($namespace) {
+	public function setDefaultNamespace($namespace)
+    {
 		$this->defaultNamespace = $namespace;
 	}
 
@@ -77,10 +79,11 @@ class GraphqlEntityGenerator extends EntityGenerator
 	{
 		return "\n".
 		'use Doctrine\ORM\Mapping as ORM;'."\n".
-		'use GraphqlApiBundle\Component\GraphqlObject;'."\n";
+		'use GraphqlApiBundle\Entity\GraphqlObject;'."\n";
 	}
 
-	private function trimSchema($className) {
+	private function trimSchema($className)
+    {
 		if(($pos = strpos($className, '.')) !== false) {
 			$className = substr($className, $pos+1);
 		}

@@ -1,6 +1,6 @@
 <?php
 
-namespace GraphqlApiBundle\Component;
+namespace GraphqlApiBundle\Entity;
 
 use GraphqlApiBundle\Service\GraphqlSchema;
 use Doctrine\ORM\Mapping\Annotation;

@@ -1,6 +1,6 @@
 <?php
 
-namespace GraphqlApiBundle\Component;
+namespace GraphqlApiBundle\Entity;
 
 use GraphqlApiBundle\Service\GraphqlSchema;
 use Doctrine\ORM\EntityManager;
@@ -68,39 +68,8 @@ class GraphqlObject
 		foreach($this->objectMetaData->getInfoProperties() as $propertyId => $propertyInfo) {
 			$def = $propertyInfo->getGraphqlField();
 			if($propertyInfo->refTargetEntity) {
-				$def['resolve'] = function ($root, $args) use ($propertyId, $propertyInfo) {
-					# Obtain related object
-					/** @var GraphqlObject $obj */
-					$obj = GraphqlSchema::$entities[ucfirst($propertyInfo->refTargetEntity)];
-					$uniqueAttr = array_keys($obj->getObjectMeta()->getUniqueProperties());
-					$repo = $obj->getRepository();
-
-					# Obtain values from related object and append them into args
-					if($root && isset($root[$propertyId]) && !empty($root[$propertyId])) {
-						foreach($uniqueAttr as $uniCol) {
-							if(isset($root[$propertyId][$uniCol]) && $root[$propertyId][$uniCol]){
-								$args[$uniCol] = $root[$propertyId][$uniCol];
-							}
-						}
-					} else {
-						# It doesn't exists any object related
-						return null;
-					}
-
-					if(array_intersect($uniqueAttr, array_keys($args))) {
-						$result = $repo->findOneBy($args);
-					} else {
-						$orderBy = (array_key_exists('order', $args)) ? [$args['order'] => 'ASC'] : [];
-						$limit = (array_key_exists('limit', $args)) ? $args['limit'] : null;
-						unset($args['limit']);
-						unset($args['order']);
-						$result = $repo->findBy($args, $orderBy, $limit);
-					}
-
-					$resultArray = json_decode(json_encode($result), true);
-					return $resultArray;
-				};
-			}
+                $def['resolve'] = $this->getRefEntityResolver($propertyId, $propertyInfo);
+            }
 
 			$fields[$propertyId] = $def;
 		}
@@ -171,4 +140,44 @@ class GraphqlObject
 	protected function getRepository() {
 		return $this->em->getRepository($this->objectMetaData->classNamespace);
 	}
+
+    /**
+     * Append information referring to related entities
+     * @param $propertyId int
+     * @param $propertyInfo array
+     */
+	protected function getRefEntityResolver($propertyId, $propertyInfo) {
+         return function ($root, $args) use ($propertyId, $propertyInfo) {
+            # Obtain related object
+            /** @var GraphqlObject $obj */
+            $obj = GraphqlSchema::$entities[ucfirst($propertyInfo->refTargetEntity)];
+            $uniqueAttr = array_keys($obj->getObjectMeta()->getUniqueProperties());
+            $repo = $obj->getRepository();
+
+            # Obtain values from related object and append them into args
+            if($root && isset($root[$propertyId]) && !empty($root[$propertyId])) {
+                foreach($uniqueAttr as $uniCol) {
+                    if(isset($root[$propertyId][$uniCol]) && $root[$propertyId][$uniCol]){
+                        $args[$uniCol] = $root[$propertyId][$uniCol];
+                    }
+                }
+            } else {
+                # It doesn't exists any object related
+                return null;
+            }
+
+            if(array_intersect($uniqueAttr, array_keys($args))) {
+                $result = $repo->findOneBy($args);
+            } else {
+                $orderBy = (array_key_exists('order', $args)) ? [$args['order'] => 'ASC'] : [];
+                $limit = (array_key_exists('limit', $args)) ? $args['limit'] : null;
+                unset($args['limit']);
+                unset($args['order']);
+                $result = $repo->findBy($args, $orderBy, $limit);
+            }
+
+            $resultArray = json_decode(json_encode($result), true);
+            return $resultArray;
+        };
+    }
 }

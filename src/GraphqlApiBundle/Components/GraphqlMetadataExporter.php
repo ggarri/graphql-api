@@ -4,7 +4,7 @@
  * Copyright: 2016, Base7booking
  */
 
-namespace GraphqlApiBundle\Tools;
+namespace GraphqlApiBundle\Components;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Tools\Export\Driver\AnnotationExporter;

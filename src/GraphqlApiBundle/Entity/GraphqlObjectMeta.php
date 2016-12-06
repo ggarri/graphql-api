@@ -1,6 +1,6 @@
 <?php
 
-namespace GraphqlApiBundle\Component;
+namespace GraphqlApiBundle\Entity;
 
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\Common\Annotations\AnnotationReader as DoctrineAnnotationReader;

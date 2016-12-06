@@ -2,7 +2,7 @@
 
 namespace GraphqlApiBundle\Service;
 
-use GraphqlApiBundle\Component\GraphqlObject;
+use GraphqlApiBundle\Entity\GraphqlObject;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityNotFoundException;
 use GraphQL\GraphQL;
@@ -49,8 +49,9 @@ class GraphqlSchema
 	 * @return array
 	 */
 	public function execute($query) {
+        $schema = $this->getSchema();
 		return GraphQL::execute(
-			$this->getSchema(),
+			$schema,
 			$query,
 			/* $rootValue */ null,
 			null,
@@ -68,7 +69,7 @@ class GraphqlSchema
 
 	/**
 	 * @param string $entityName
-	 * @return GraphqlObject|null
+	 * @return ObjectType|null
 	 * @throws EntityNotFoundException
 	 */
 	public function getGraphqlEntity($entityName) {
@@ -76,8 +77,7 @@ class GraphqlSchema
 			throw new \Exception("Entity $entityName not found");
 		}
 
-		$entity = self::$entities[$entityName]->getGraphqlEntity();
-		return $entity;
+		return self::$entities[$entityName]->getGraphqlEntity();
 	}
 
 
@@ -101,6 +101,8 @@ class GraphqlSchema
 			$fields[$entity->getQueryName(true)] = $entity->getGraphqlQuery(true);
 		}
 
+        ksort($fields);
+
 		foreach($fields as &$field) {
 			if(!array_key_exists('type', $field)) continue;
 
@@ -113,7 +115,7 @@ class GraphqlSchema
 		}
 
 		$queries = new ObjectType([
-			'name' => 'Query',
+			'name' => 'RootQueryType',
 			'fields' => $fields
 		]);
 

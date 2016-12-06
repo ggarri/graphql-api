@@ -7,7 +7,7 @@ namespace GraphqlApiBundle\Command;
  */
 
 use Doctrine\Bundle\DoctrineBundle\Command\Proxy\ConvertMappingDoctrineCommand;
-use GraphqlApiBundle\Tools\GraphqlMetadataExporter;
+use GraphqlApiBundle\Components\GraphqlMetadataExporter;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
